@@ -1,0 +1,3 @@
+spring.application.name=spring-quickstart
+server.port=9098
+server.servlet.context-path=/spring-quickstart
