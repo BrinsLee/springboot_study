@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jieleme.module.sms.mapper.SmsCodeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.jieleme.module.sms.entity.SmsCode">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="scene" property="scene" jdbcType="VARCHAR"/>
+        <result column="request_id" property="requestId" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="expire_at" property="expireAt" jdbcType="TIMESTAMP"/>
+        <result column="used_at" property="usedAt" jdbcType="TIMESTAMP"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, phone, scene, request_id, code, expire_at, used_at, created_at, ip
+    </sql>
+    
+    <insert id="insert" parameterType="com.jieleme.module.sms.entity.SmsCode"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_sms_code (
+            phone,
+            scene,
+            request_id,
+            code,
+            expire_at,
+            used_at,
+            created_at,
+            ip
+        ) VALUES (
+            #{phone},
+            #{scene},
+            #{requestId},
+            #{code},
+            #{expireAt},
+            #{usedAt},
+            #{createdAt},
+            #{ip}
+        )
+    </insert>
+    
+    <select id="selectLatestValid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sms_code
+        WHERE phone = #{phone}
+          AND scene = #{scene}
+          AND expire_at > #{now}
+          AND used_at IS NULL
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+    
+    <select id="countInTimeRange" resultType="int">
+        SELECT COUNT(*)
+        FROM t_sms_code
+        WHERE phone = #{phone}
+          AND scene = #{scene}
+          AND created_at BETWEEN #{fromTime} AND #{toTime}
+    </select>
+    
+    <select id="selectLatest" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sms_code
+        WHERE phone = #{phone}
+          AND scene = #{scene}
+        ORDER BY created_at DESC
+        LIMIT 1
+    </select>
+    
+    <update id="markAsUsed">
+        UPDATE t_sms_code
+        SET used_at = #{usedAt}
+        WHERE id = #{id}
+    </update>
+    
+</mapper>
