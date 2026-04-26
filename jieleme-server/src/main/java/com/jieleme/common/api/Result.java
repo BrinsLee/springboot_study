@@ -6,16 +6,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 统一API响应包装类
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+public class Result<T> {
     
     private int code;
     private String msg;
     private T data;
     
-    public ApiResponse() {
+    public Result() {
     }
     
-    public ApiResponse(int code, String msg, T data) {
+    public Result(int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -24,29 +24,29 @@ public class ApiResponse<T> {
     /**
      * 成功响应
      */
-    public static <T> ApiResponse<T> ok(T data) {
-        return new ApiResponse<>(0, "ok", data);
+    public static <T> Result<T> success(T data) {
+        return new Result<>(0, "ok", data);
     }
     
     /**
      * 成功响应（无数据）
      */
-    public static <T> ApiResponse<T> ok() {
-        return new ApiResponse<>(0, "ok", null);
+    public static <T> Result<T> success() {
+        return new Result<>(0, "ok", null);
     }
     
     /**
      * 失败响应
      */
-    public static <T> ApiResponse<T> fail(int code, String msg) {
-        return new ApiResponse<>(code, msg, null);
+    public static <T> Result<T> fail(int code, String msg) {
+        return new Result<>(code, msg, null);
     }
     
     /**
      * 失败响应（带数据）
      */
-    public static <T> ApiResponse<T> fail(int code, String msg, T data) {
-        return new ApiResponse<>(code, msg, data);
+    public static <T> Result<T> fail(int code, String msg, T data) {
+        return new Result<>(code, msg, data);
     }
     
     // Getters and Setters

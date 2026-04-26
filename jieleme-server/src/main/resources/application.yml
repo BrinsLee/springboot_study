@@ -30,3 +30,10 @@ auth:
 logging:
   level:
     com.jieleme: debug
+
+ai:
+  provider:
+    active: volcengine
+  volcengine:
+    ak: "替换为你的真实的 AK"
+    sk: "替换为你的真实的 SK"

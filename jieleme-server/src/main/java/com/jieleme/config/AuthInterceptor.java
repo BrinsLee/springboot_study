@@ -1,7 +1,7 @@
 package com.jieleme.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jieleme.common.api.ApiResponse;
+import com.jieleme.common.api.Result;
 import com.jieleme.common.api.ErrorCode;
 import com.jieleme.common.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -72,8 +72,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json;charset=UTF-8");
         
-        ApiResponse<?> apiResponse = ApiResponse.fail(ErrorCode.UNAUTHORIZED, message);
-        String json = objectMapper.writeValueAsString(apiResponse);
+        Result<?> result = Result.fail(ErrorCode.UNAUTHORIZED, message);
+        String json = objectMapper.writeValueAsString(result);
         
         response.getWriter().write(json);
     }

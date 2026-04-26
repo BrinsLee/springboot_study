@@ -1,6 +1,6 @@
 package com.jieleme.module.user.controller;
 
-import com.jieleme.common.api.ApiResponse;
+import com.jieleme.common.api.Result;
 import com.jieleme.common.api.ErrorCode;
 import com.jieleme.common.exception.BizException;
 import com.jieleme.module.user.entity.User;
@@ -25,7 +25,7 @@ public class UserController {
      * 获取当前用户信息
      */
     @GetMapping("/me")
-    public ApiResponse<User> getCurrentUser(HttpServletRequest request) {
+    public Result<User> getCurrentUser(HttpServletRequest request) {
         // 从request attribute中获取userId（由AuthInterceptor设置）
         Long userId = (Long) request.getAttribute("userId");
         
@@ -38,6 +38,6 @@ public class UserController {
             throw new BizException(ErrorCode.SYSTEM_ERROR, "用户不存在");
         }
         
-        return ApiResponse.ok(user);
+        return Result.success(user);
     }
 }
